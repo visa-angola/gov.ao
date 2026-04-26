@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Oficial de Vistos - República de Angola</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --angola-red: #CC092F;
+  --angola-black: #000000;
+  --angola-yellow: #FFCD00;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-800: #2d2d2d;
+  --white: #ffffff;
+  --success: #28a745;
+  --danger: #dc3545;
+  --warning: #ffc107;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--gray-800);
+  background: var(--gray-100);
+}
+header {
+  background: var(--angola-black);
+  color: var(--white);
+  padding: 0.5rem 0;
+  border-bottom: 4px solid var(--angola-red);
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+.lang-selector select, .user-actions button {
+  background: var(--angola-red);
+  color: var(--white);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.branding {
+  background: var(--white);
+  color: var(--angola-black);
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 3px solid var(--angola-yellow);
+}
+.branding h1 { font-size: 1.8rem; }
+.branding p { color: var(--angola-red); font-weight: 600; }
+nav {
+  background: var(--angola-red);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+nav li a {
+  display: block;
+  color: var(--white);
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+nav li a:hover, nav li a.active { background: var(--angola-black); }
+.container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  min-height: 60vh;
+}
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), var(--angola-red);
+  color: var(--white);
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+.hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+.btn {
+  background: var(--angola-yellow);
+  color: var(--angola-black);
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+}
+.btn:hover { background: #e6b800; transform: translateY(-2px); }
+.btn-secondary { background: var(--angola-red); color: var(--white); }
+.btn-success { background: var(--success); color: var(--white); }
+.btn-danger { background: var(--danger); color: var(--white); }
+.btn-sm { padding: 0.4rem 1rem; font-size: 0.85rem; }
+.card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.card h3 {
+  color: var(--angola-red);
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--angola-yellow);
+  padding-left: 0.8rem;
+}
+.form-group { margin-bottom: 1.2rem; }
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: left;
+}
+table th {
+  background: var(--angola-black);
+  color: var(--white);
+}
+table tr:hover { background: var(--gray-100); }
+.badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.badge-pendente { background: var(--warning); color: var(--angola-black); }
+.badge-aprovado { background: var(--success); color: var(--white); }
+.badge-rejeitado { background: var(--danger); color: var(--white); }
+footer {
+  background: var(--angola-black);
+  color: var(--white);
+  padding: 2rem 1rem;
+  margin-top: 3rem;
+  text-align: center;
+}
+.footer-links { margin: 1rem 0; }
+.footer-links a {
+  color: var(--angola-yellow);
+  margin: 0 1rem;
+  text-decoration: none;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.alert-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+.alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: var(--white);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 999;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.whatsapp-float:hover { transform: scale(1.1); }
+.contact-bar {
+  background: var(--angola-yellow);
+  color: var(--angola-black);
+  padding: 0.8rem;
+  text-align: center;
+  font-weight: 600;
+}
+.contact-bar i { margin: 0 0.5rem; }
+.profile-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.profile-item {
+  background: var(--gray-100);
+  padding: 1rem;
+  border-radius: 4px;
+}
+.profile-item strong { color: var(--angola-red); display: block; margin-bottom: 0.3rem; }
+@media (max-width: 768px) {
+  nav ul { flex-direction: column; }
+  .hero h2 { font-size: 1.8rem; }
+  .top-bar { flex-direction: column; gap: 0.5rem; }
+  table { font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="top-bar">
+    <div class="lang-selector">
+      <i class="fas fa-globe"></i>
+      <select id="languageSelect" onchange="changeLanguage()">
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+        <option value="zh">中文</option>
+        <option value="ar">العربية</option>
+        <option value="ru">Русский</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="hi">हिन्दी</option>
+      </select>
+    </div>
+    <div class="user-actions" id="userActions">
+      <button onclick="showModal('loginModal')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button onclick="showModal('registerModal')"><i class="fas fa-user-plus"></i> Criar Conta</button>
+    </div>
+  </div>
+</header>
+
+<div class="contact-bar">
+  <i class="fas fa-phone"></i> Call Center: +244 975 425 542 
+  <i class="fab fa-whatsapp"></i> WhatsApp: +244 975 425 542
+  <i class="fas fa-envelope"></i>
+</div>
+
+<div class="branding">
+  <h1>Serviço De Migração E Estrangeiros</h1>
+  <p>Portal Oficial de Solicitação de Vistos Eletrónicos</p>
+</div>
+
+<nav>
+  <ul id="mainNav">
+    <li><a href="#" class="nav-link active" onclick="showSection('inicio')">Início</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('sobre')">Sobre</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('legislacao')">Legislação</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('servicos')">Serviços</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('taxas')">Taxas</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('comunicacao')">Comunicação</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('imprensa')">Imprensa</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('auditoria')">Auditoria</a></li>
+    <li><a href="#" class="nav-link" onclick="showSection('cadastro')">Pedido de Visto</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <section id="inicio" class="section active">
+    <div class="hero">
+      <h2>Solicite o seu Visto para Angola Online</h2>
+      <p>Processo rápido, seguro e 100% digital conforme normas internacionais ICAO e GDPR</p>
+      <br>
+      <button class="btn" onclick="checkAuth('cadastro')">Iniciar Pedido de Visto</button>
+    </div>
+    <div class="card">
+      <h3>Como Funciona</h3>
+      <ol>
+        <li>Crie sua conta ou faça login</li>
+        <li>Preencha o formulário com seus dados</li>
+        <li>Anexe os documentos exigidos em PDF/JPG</li>
+        <li>Pague as taxas aplicáveis</li>
+        <li>Receba o comprovativo de submissão em PDF</li>
+        <li>Acompanhe o estado no seu perfil</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="sobre" class="section">
+    <div class="card">
+      <h3>Sobre o Portal</h3>
+      <p>Portal institucional oficial do Serviço de Migração e Estrangeiros da República de Angola para solicitação de vistos eletrónicos. Desenvolvido segundo normas ICAO Doc 9303, ISO 27001 e Lei nº 22/11 de Proteção de Dados.</p>
+    </div>
+  </section>
+
+  <section id="legislacao" class="section">
+    <div class="card">
+      <h3>Legislação Aplicável</h3>
+      <ul>
+        <li>Lei nº 13/19 - Regime Jurídico dos Estrangeiros</li>
+        <li>Decreto Presidencial nº 56/18 - Regulamento de Vistos</li>
+        <li>Normas ICAO Doc 9303 - Documentos de Viagem de Leitura Mecânica</li>
+        <li>Lei nº 22/11 - Proteção de Dados Pessoais</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="servicos" class="section">
+    <div class="card">
+      <h3>Tipos de Visto Disponíveis</h3>
+      <table>
+        <tr><th>Tipo</th><th>Validade</th><th>Entradas</th><th>Prazo</th></tr>
+        <tr><td>Turismo</td><td>30 dias</td><td>Única</td><td>5 dias úteis</td></tr>
+        <tr><td>Negócios</td><td>90 dias</td><td>Múltiplas</td><td>7 dias úteis</td></tr>
+        <tr><td>Trabalho</td><td>1 ano</td><td>Múltiplas</td><td>15 dias úteis</td></tr>
+        <tr><td>Trânsito</td><td>7 dias</td><td>Única</td><td>3 dias úteis</td></tr>
+        <tr><td>Estudo</td><td>1 ano</td><td>Múltiplas</td><td>10 dias úteis</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="taxas" class="section">
+    <div class="card">
+      <h3>Tabela de Taxas</h3>
+      <table>
+        <tr><th>Tipo de Visto</th><th>Taxa USD Normal</th><th>Taxa USD Urgente</th></tr>
+        <tr><td>Turismo</td><td>$200 - 15 dias</td><td>$350 - 24 horas</td></tr>
+        <tr><td>Negócios</td><td>$200 - 15 dias</td><td>$350 - 24 horas</td></tr>
+        <tr><td>Trabalho</td><td>$200 - 15 dias</td><td>$350 - 24 horas</td></tr>
+        <tr><td>Trânsito</td><td>$200 - 15 dias</td><td>$350 - 24 horas</td></tr>
+        <tr><td>Estudo</td><td>$200 - 15 dias</td><td>$350 - 24 horas</td></tr>
+      </table>
+      <p class="alert alert-info">Para aprovação e liberação do visto. Pagamento via transferência bancária ou cartão Visa pode ser feito em Dólares ou Euro, solicita as coordenadas bancária pelo WhatSap Oficial</p>
+    </div>
+  </section>
+
+  <section id="comunicacao" class="section">
+    <div class="card"><h3>Comunicação</h3><p>Canal oficial para avisos. Contacte: +244 975 425 542</p></div>
+  </section>
+  <section id="imprensa" class="section">
+    <div class="card"><h3>Imprensa</h3><p>Notas de imprensa do Serviço de Migração e Estrangeiros.</p></div>
+  </section>
+  <section id="auditoria" class="section">
+    <div class="card"><h3>Auditoria e Transparência</h3><p>Relatórios mensais de processamento disponíveis conforme Lei de Acesso à Informação.</p></div>
+  </section>
+
+  <section id="cadastro" class="section">
+    <div class="card">
+      <h3>Formulário de Pedido de Visto</h3>
+      <form id="visaForm" onsubmit="submitVisaForm(event)">
+        <h4>Dados Pessoais</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome Completo *</label>
+            <input type="text" id="fullName" required>
+          </div>
+          <div class="form-group">
+            <label>Data de Nascimento *</label>
+            <input type="date" id="birthDate" required>
+          </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nacionalidade *</label>
+            <select id="nationality" required><option value="">Selecione o país</option></select>
+          </div>
+          <div class="form-group">
+            <label>País de Residência *</label>
+            <select id="residence" required><option value="">Selecione o país</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Código de Discagem *</label>
+            <select id="dialCode" required><option value="">Selecione</option></select>
+          </div>
+          <div class="form-group">
+            <label>Telefone *</label>
+            <input type="tel" id="phone" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <h4>Dados do Documento</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Número do Passaporte *</label>
+            <input type="text" id="passport" required>
+          </div>
+          <div class="form-group">
+            <label>Data de Validade *</label>
+            <input type="date" id="passportExpiry" required>
+          </div>
+        </div>
+        
+        <h4>Dados da Viagem</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo de Visto *</label>
+            <select id="visaType" required>
+              <option value="">Selecione</option>
+              <option value="Turismo">Turismo</option>
+              <option value="Negócios">Negócios</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Trânsito">Trânsito</option>
+              <option value="Estudo">Estudo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data Prevista de Entrada *</label>
+            <input type="date" id="entryDate" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Propósito da Viagem *</label>
+          <textarea id="purpose" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Anexar Passaporte (PDF/JPG/PNG) *</label>
+          <input type="file" id="docUpload" accept=".pdf,.jpg,.jpeg,.png" required>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">Declaro que as informações são verdadeiras e aceito os termos de privacidade conforme Lei nº 22/11</label>
+        </div>
+        <button type="submit" class="btn">Submeter Pedido</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="perfil" class="section">
+    <div class="card">
+      <h3>Meu Perfil</h3>
+      <div id="profileContent"></div>
+    </div>
+    <div class="card">
+      <h3>Meus Pedidos de Visto</h3>
+      <div id="myApplications"></div>
+    </div>
+  </section>
+
+  <section id="admin" class="section">
+    <div class="card">
+      <h3><i class="fas fa-shield-alt"></i> Painel Administrativo - SME</h3>
+      <p class="alert alert-info">Acesso restrito a funcionários autorizados do Serviço de Migração e Estrangeiros</p>
+    </div>
+    <div class="card">
+      <h3>Todos os Pedidos de Visto</h3>
+      <div id="adminApplications"></div>
+    </div>
+  </section>
+</div>
+
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <h3>Fazer Login</h3>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group"><input type="email" id="loginEmail" placeholder="Email" required></div>
+      <div class="form-group"><input type="password" id="loginPassword" placeholder="Palavra-passe" required></div>
+      <button type="submit" class="btn">Entrar</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('loginModal')">Cancelar</button>
+    </form>
+    <p style="margin-top:1rem;font-size:0.9rem;">Seja Bem Vindo(a)</p>
+  </div>
+</div>
+
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <h3>Criar Conta</h3>
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group"><input type="text" id="regName" placeholder="Nome Completo" required></div>
+      <div class="form-group"><input type="email" id="regEmail" placeholder="Email" required></div>
+      <div class="form-group"><input type="password" id="regPassword" placeholder="Palavra-passe" required></div>
+      <div class="form-group"><input type="tel" id="regPhone" placeholder="Telefone" required></div>
+      <button type="submit" class="btn">Registar</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('registerModal')">Cancelar</button>
+    </form>
+  </div>
+</div>
+
+<a href="https://wa.me/244975425542" target="_blank" class="whatsapp-float">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<footer>
+  <p><strong>República de Angola - Serviço de Migração e Estrangeiros</strong></p>
+  <div class="footer-links">
+    <a href="#">Termos de Uso</a>
+    <a href="#">Política de Privacidade</a>
+    <a href="#">Lei nº 22/11 - Proteção de Dados</a>
+    <a href="tel:+244975425542">Call Center: +244 975 425 542</a>
+  </div>
+  <p>© 2026 Todos os direitos reservados. Conformidade ICAO Doc 9303 / ISO 27001</p>
+</footer>
+
+<script>
+const countries = [
+  {name: "Afeganistão", code: "AF", dial: "+93", flag: "🇦🇫"},
+  {name: "África do Sul", code: "ZA", dial: "+27", flag: "🇿🇦"},
+  {name: "Albânia", code: "AL", dial: "+355", flag: "🇦🇱"},
+  {name: "Alemanha", code: "DE", dial: "+49", flag: "🇩🇪"},
+  {name: "Andorra", code: "AD", dial: "+376", flag: "🇦🇩"},
+  {name: "Angola", code: "AO", dial: "+244", flag: "🇦🇴"},
+  {name: "Antígua e Barbuda", code: "AG", dial: "+1-268", flag: "🇦🇬"},
+  {name: "Arábia Saudita", code: "SA", dial: "+966", flag: "🇸🇦"},
+  {name: "Argélia", code: "DZ", dial: "+213", flag: "🇩🇿"},
+  {name: "Argentina", code: "AR", dial: "+54", flag: "🇦🇷"},
+  {name: "Arménia", code: "AM", dial: "+374", flag: "🇦🇲"},
+  {name: "Austrália", code: "AU", dial: "+61", flag: "🇦🇺"},
+  {name: "Áustria", code: "AT", dial: "+43", flag: "🇦🇹"},
+  {name: "Azerbaijão", code: "AZ", dial: "+994", flag: "🇦🇿"},
+  {name: "Bahamas", code: "BS", dial: "+1-242", flag: "🇧🇸"},
+  {name: "Bangladeche", code: "BD", dial: "+880", flag: "🇧🇩"},
+  {name: "Barbados", code: "BB", dial: "+1-246", flag: "🇧🇧"},
+  {name: "Barém", code: "BH", dial: "+973", flag: "🇧🇭"},
+  {name: "Bélgica", code: "BE", dial: "+32", flag: "🇧🇪"},
+  {name: "Belize", code: "BZ", dial: "+501", flag: "🇧🇿"},
+  {name: "Benim", code: "BJ", dial: "+229", flag: "🇧🇯"},
+  {name: "Bielorrússia", code: "BY", dial: "+375", flag: "🇧🇾"},
+  {name: "Bolívia", code: "BO", dial: "+591", flag: "🇧🇴"},
+  {name: "Bósnia e Herzegovina", code: "BA", dial: "+387", flag: "🇧🇦"},
+  {name: "Botsuana", code: "BW", dial: "+267", flag: "🇧🇼"},
+  {name: "Brasil", code: "BR", dial: "+55", flag: "🇧🇷"},
+  {name: "Brunei", code: "BN", dial: "+673", flag: "🇧🇳"},
+  {name: "Bulgária", code: "BG", dial: "+359", flag: "🇧🇬"},
+  {name: "Burquina Faso", code: "BF", dial: "+226", flag: "🇧🇫"},
+  {name: "Burundi", code: "BI", dial: "+257", flag: "🇧🇮"},
+  {name: "Butão", code: "BT", dial: "+975", flag: "🇧🇹"},
+  {name: "Cabo Verde", code: "CV", dial: "+238", flag: "🇨🇻"},
+  {name: "Camarões", code: "CM", dial: "+237", flag: "🇨🇲"},
+  {name: "Camboja", code: "KH", dial: "+855", flag: "🇰🇭"},
+  {name: "Canadá", code: "CA", dial: "+1", flag: "🇨🇦"},
+  {name: "Catar", code: "QA", dial: "+974", flag: "🇶🇦"},
+  {name: "Cazaquistão", code: "KZ", dial: "+7", flag: "🇰🇿"},
+  {name: "Chade", code: "TD", dial: "+235", flag: "🇹🇩"},
+  {name: "Chile", code: "CL", dial: "+56", flag: "🇨🇱"},
+  {name: "China", code: "CN", dial: "+86", flag: "🇨🇳"},
+  {name: "Chipre", code: "CY", dial: "+357", flag: "🇨🇾"},
+  {name: "Colômbia", code: "CO", dial: "+57", flag: "🇨🇴"},
+  {name: "Comores", code: "KM", dial: "+269", flag: "🇰🇲"},
+  {name: "Congo", code: "CG", dial: "+242", flag: "🇨🇬"},
+  {name: "Coreia do Norte", code: "KP", dial: "+850", flag: "🇰🇵"},
+  {name: "Coreia do Sul", code: "KR", dial: "+82", flag: "🇰🇷"},
+  {name: "Costa do Marfim", code: "CI", dial: "+225", flag: "🇨🇮"},
+  {name: "Costa Rica", code: "CR", dial: "+506", flag: "🇨🇷"},
+  {name: "Croácia", code: "HR", dial: "+385", flag: "🇭🇷"},
+  {name: "Cuba", code: "CU", dial: "+53", flag: "🇨🇺"},
+  {name: "Dinamarca", code: "DK", dial: "+45", flag: "🇩🇰"},
+  {name: "Djibuti", code: "DJ", dial: "+253", flag: "🇩🇯"},
+  {name: "Dominica", code: "DM", dial: "+1-767", flag: "🇩🇲"},
+  {name: "Egito", code: "EG", dial: "+20", flag: "🇪🇬"},
+  {name: "El Salvador", code: "SV", dial: "+503", flag: "🇸🇻"},
+  {name: "Emirados Árabes Unidos", code: "AE", dial: "+971", flag: "🇦🇪"},
+  {name: "Equador", code: "EC", dial: "+593", flag: "🇪🇨"},
+  {name: "Eritreia", code: "ER", dial: "+291", flag: "🇪🇷"},
+  {name: "Eslováquia", code: "SK", dial: "+421", flag: "🇸🇰"},
+  {name: "Eslovénia", code: "SI", dial: "+386", flag: "🇸🇮"},
+  {name: "Espanha", code: "ES", dial: "+34", flag: "🇪🇸"},
+  {name: "Estados Unidos", code: "US", dial: "+1", flag: "🇺🇸"},
+  {name: "Estónia", code: "EE", dial: "+372", flag: "🇪🇪"},
+  {name: "Eswatini", code: "SZ", dial: "+268", flag: "🇸🇿"},
+  {name: "Etiópia", code: "ET", dial: "+251", flag: "🇪🇹"},
+  {name: "Fiji", code: "FJ", dial: "+679", flag: "🇫🇯"},
+  {name: "Filipinas", code: "PH", dial: "+63", flag: "🇵🇭"},
+  {name: "Finlândia", code: "FI", dial: "+358", flag: "🇫🇮"},
+  {name: "França", code: "FR", dial: "+33", flag: "🇫🇷"},
+  {name: "Gabão", code: "GA", dial: "+241", flag: "🇬🇦"},
+  {name: "Gâmbia", code: "GM", dial: "+220", flag: "🇬🇲"},
+  {name: "Gana", code: "GH", dial: "+233", flag: "🇬🇭"},
+  {name: "Geórgia", code: "GE", dial: "+995", flag: "🇬🇪"},
+  {name: "Granada", code: "GD", dial: "+1-473", flag: "🇬🇩"},
+  {name: "Grécia", code: "GR", dial: "+30", flag: "🇬🇷"},
+  {name: "Guatemala", code: "GT", dial: "+502", flag: "🇬🇹"},
+  {name: "Guiana", code: "GY", dial: "+592", flag: "🇬🇾"},
+  {name: "Guiné", code: "GN", dial: "+224", flag: "🇬🇳"},
+  {name: "Guiné-Bissau", code: "GW", dial: "+245", flag: "🇬🇼"},
+  {name: "Guiné Equatorial", code: "GQ", dial: "+240", flag: "🇬🇶"},
+  {name: "Haiti", code: "HT", dial: "+509", flag: "🇭🇹"},
+  {name: "Holanda", code: "NL", dial: "+31", flag: "🇳🇱"},
+  {name: "Honduras", code: "HN", dial: "+504", flag: "🇭🇳"},
+  {name: "Hungria", code: "HU", dial: "+36", flag: "🇭🇺"},
+  {name: "Iémen", code: "YE", dial: "+967", flag: "🇾🇪"},
+  {name: "Ilhas Marshall", code: "MH", dial: "+692", flag: "🇲🇭"},
+  {name: "Ilhas Salomão", code: "SB", dial: "+677", flag: "🇸🇧"},
+  {name: "Índia", code: "IN", dial: "+91", flag: "🇮🇳"},
+  {name: "Indonésia", code: "ID", dial: "+62", flag: "🇮🇩"},
+  {name: "Irão", code: "IR", dial: "+98", flag: "🇮🇷"},
+  {name: "Iraque", code: "IQ", dial: "+964", flag: "🇮🇶"},
+  {name: "Irlanda", code: "IE", dial: "+353", flag: "🇮🇪"},
+  {name: "Islândia", code: "IS", dial: "+354", flag: "🇮🇸"},
+  {name: "Israel", code: "IL", dial: "+972", flag: "🇮🇱"},
+  {name: "Itália", code: "IT", dial: "+39", flag: "🇮🇹"},
+  {name: "Jamaica", code: "JM", dial: "+1-876", flag: "🇯🇲"},
+  {name: "Japão", code: "JP", dial: "+81", flag: "🇯🇵"},
+  {name: "Jordânia", code: "JO", dial: "+962", flag: "🇯🇴"},
+  {name: "Kiribati", code: "KI", dial: "+686", flag: "🇰🇮"},
+  {name: "Kosovo", code: "XK", dial: "+383", flag: "🇽🇰"},
+  {name: "Kuwait", code: "KW", dial: "+965", flag: "🇰🇼"},
+  {name: "Laos", code: "LA", dial: "+856", flag: "🇱🇦"},
+  {name: "Lesoto", code: "LS", dial: "+266", flag: "🇱🇸"},
+  {name: "Letónia", code: "LV", dial: "+371", flag: "🇱🇻"},
+  {name: "Líbano", code: "LB", dial: "+961", flag: "🇱🇧"},
+  {name: "Libéria", code: "LR", dial: "+231", flag: "🇱🇷"},
+  {name: "Líbia", code: "LY", dial: "+218", flag: "🇱🇾"},
+  {name: "Liechtenstein", code: "LI", dial: "+423", flag: "🇱🇮"},
+  {name: "Lituânia", code: "LT", dial: "+370", flag: "🇱🇹"},
+  {name: "Luxemburgo", code: "LU", dial: "+352", flag: "🇱🇺"},
+  {name: "Macedónia do Norte", code: "MK", dial: "+389", flag: "🇲🇰"},
+  {name: "Madagáscar", code: "MG", dial: "+261", flag: "🇲🇬"},
+  {name: "Malásia", code: "MY", dial: "+60", flag: "🇲🇾"},
+  {name: "Malaui", code: "MW", dial: "+265", flag: "🇲🇼"},
+  {name: "Maldivas", code: "MV", dial: "+960", flag: "🇲🇻"},
+  {name: "Mali", code: "ML", dial: "+223", flag: "🇲🇱"},
+  {name: "Malta", code: "MT", dial: "+356", flag: "🇲🇹"},
+  {name: "Marrocos", code: "MA", dial: "+212", flag: "🇲🇦"},
+  {name: "Maurícia", code: "MU", dial: "+230", flag: "🇲🇺"},
+  {name: "Mauritânia", code: "MR", dial: "+222", flag: "🇲🇷"},
+  {name: "México", code: "MX", dial: "+52", flag: "🇲🇽"},
+  {name: "Micronésia", code: "FM", dial: "+691", flag: "🇫🇲"},
+  {name: "Moçambique", code: "MZ", dial: "+258", flag: "🇲🇿"},
+  {name: "Moldávia", code: "MD", dial: "+373", flag: "🇲🇩"},
+  {name: "Mónaco", code: "MC", dial: "+377", flag: "🇲🇨"},
+  {name: "Mongólia", code: "MN", dial: "+976", flag: "🇲🇳"},
+  {name: "Montenegro", code: "ME", dial: "+382", flag: "🇲🇪"},
+  {name: "Myanmar", code: "MM", dial: "+95", flag: "🇲"},
+  {name: "Namíbia", code: "NA", dial: "+264", flag: "🇳🇦"},
+  {name: "Nauru", code: "NR", dial: "+674", flag: "🇳🇷"},
+  {name: "Nepal", code: "NP", dial: "+977", flag: "🇳🇵"},
+  {name: "Nicarágua", code: "NI", dial: "+505", flag: "🇳🇮"},
+  {name: "Níger", code: "NE", dial: "+227", flag: "🇳🇪"},
+  {name: "Nigéria", code: "NG", dial: "+234", flag: "🇳🇬"},
+  {name: "Noruega", code: "NO", dial: "+47", flag: "🇳🇴"},
+  {name: "Nova Zelândia", code: "NZ", dial: "+64", flag: "🇳🇿"},
+  {name: "Omã", code: "OM", dial: "+968", flag: "🇴🇲"},
+  {name: "Palau", code: "PW", dial: "+680", flag: "🇵🇼"},
+  {name: "Panamá", code: "PA", dial: "+507", flag: "🇵🇦"},
+  {name: "Papua-Nova Guiné", code: "PG", dial: "+675", flag: "🇵🇬"},
+  {name: "Paquistão", code: "PK", dial: "+92", flag: "🇵🇰"},
+  {name: "Paraguai", code: "PY", dial: "+595", flag: "🇵🇾"},
+  {name: "Peru", code: "PE", dial: "+51", flag: "🇵🇪"},
+  {name: "Polónia", code: "PL", dial: "+48", flag: "🇵🇱"},
+  {name: "Portugal", code: "PT", dial: "+351", flag: "🇵🇹"},
+  {name: "Quénia", code: "KE", dial: "+254", flag: "🇰🇪"},
+  {name: "Quirguistão", code: "KG", dial: "+996", flag: "🇰🇬"},
+  {name: "Reino Unido", code: "GB", dial: "+44", flag: "🇬🇧"},
+  {name: "República Centro-Africana", code: "CF", dial: "+236", flag: "🇨🇫"},
+  {name: "República Checa", code: "CZ", dial: "+420", flag: "🇨🇿"},
+  {name: "República Democrática do Congo", code: "CD", dial: "+243", flag: "🇨🇩"},
+  {name: "República Dominicana", code: "DO", dial: "+1-809", flag: "🇩🇴"},
+  {name: "Roménia", code: "RO", dial: "+40", flag: "🇷🇴"},
+  {name: "Ruanda", code: "RW", dial: "+250", flag: "🇷🇼"},
+  {name: "Rússia", code: "RU", dial: "+7", flag: "🇷🇺"},
+  {name: "Samoa", code: "WS", dial: "+685", flag: "🇼🇸"},
+  {name: "Santa Lúcia", code: "LC", dial: "+1-758", flag: "🇱🇨"},
+  {name: "São Cristóvão e Nevis", code: "KN", dial: "+1-869", flag: "🇰🇳"},
+  {name: "São Marinho", code: "SM", dial: "+378", flag: "🇸🇲"},
+  {name: "São Tomé e Príncipe", code: "ST", dial: "+239", flag: "🇸🇹"},
+  {name: "São Vicente e Granadinas", code: "VC", dial: "+1-784", flag: "🇻🇨"},
+  {name: "Seicheles", code: "SC", dial: "+248", flag: "🇸🇨"},
+  {name: "Senegal", code: "SN", dial: "+221", flag: "🇸🇳"},
+  {name: "Serra Leoa", code: "SL", dial: "+232", flag: "🇸🇱"},
+  {name: "Sérvia", code: "RS", dial: "+381", flag: "🇷🇸"},
+  {name: "Singapura", code: "SG", dial: "+65", flag: "🇸🇬"},
+  {name: "Síria", code: "SY", dial: "+963", flag: "🇸🇾"},
+  {name: "Somália", code: "SO", dial: "+252", flag: "🇸🇴"},
+  {name: "Sri Lanka", code: "LK", dial: "+94", flag: "🇱🇰"},
+  {name: "Sudão", code: "SD", dial: "+249", flag: "🇸🇩"},
+  {name: "Sudão do Sul", code: "SS", dial: "+211", flag: "🇸🇸"},
+  {name: "Suécia", code: "SE", dial: "+46", flag: "🇸🇪"},
+  {name: "Suíça", code: "CH", dial: "+41", flag: "🇨🇭"},
+  {name: "Suriname", code: "SR", dial: "+597", flag: "🇸🇷"},
+  {name: "Tailândia", code: "TH", dial: "+66", flag: "🇹🇭"},
+  {name: "Taiwan", code: "TW", dial: "+886", flag: "🇹🇼"},
+  {name: "Tajiquistão", code: "TJ", dial: "+992", flag: "🇹🇯"},
+  {name: "Tanzânia", code: "TZ", dial: "+255", flag: "🇹🇿"},
+  {name: "Timor-Leste", code: "TL", dial: "+670", flag: "🇹🇱"},
+  {name: "Togo", code: "TG", dial: "+228", flag: "🇹🇬"},
+  {name: "Tonga", code: "TO", dial: "+676", flag: "🇹🇴"},
+  {name: "Trindade e Tobago", code: "TT", dial: "+1-868", flag: "🇹🇹"},
+  {name: "Tunísia", code: "TN", dial: "+216", flag: "🇹🇳"},
+  {name: "Turcomenistão", code: "TM", dial: "+993", flag: "🇹🇲"},
+  {name: "Turquia", code: "TR", dial: "+90", flag: "🇹🇷"},
+  {name: "Tuvalu", code: "TV", dial: "+688", flag: "🇹🇻"},
+  {name: "Ucrânia", code: "UA", dial: "+380", flag: "🇺🇦"},
+  {name: "Uganda", code: "UG", dial: "+256", flag: "🇺🇬"},
+  {name: "Uruguai", code: "UY", dial: "+598", flag: "🇺🇾"},
+  {name: "Usbequistão", code: "UZ", dial: "+998", flag: "🇺🇿"},
+  {name: "Vanuatu", code: "VU", dial: "+678", flag: "🇻🇺"},
+  {name: "Vaticano", code: "VA", dial: "+39", flag: "🇻🇦"},
+  {name: "Venezuela", code: "VE", dial: "+58", flag: "🇻🇪"},
+  {name: "Vietname", code: "VN", dial: "+84", flag: "🇻🇳"},
+  {name: "Zâmbia", code: "ZM", dial: "+260", flag: "🇿🇲"},
+  {name: "Zimbábue", code: "ZW", dial: "+263", flag: "🇿🇼"}
+];
+
+const translations = {
+  pt: { hero_title: "Solicite o seu Visto para Angola Online", hero_subtitle: "Processo rápido, seguro e 100% digital conforme normas internacionais", hero_btn: "Iniciar Pedido de Visto", how_title: "Como Funciona", step1: "Crie sua conta ou faça login", step2: "Preencha o formulário com seus dados", step3: "Anexe os documentos exigidos", step4: "Pague as taxas aplicáveis", step5: "Receba o comprovativo de submissão em PDF", step6: "Acompanhe o estado no seu perfil" },
+  en: { hero_title: "Apply for Your Angola Visa Online", hero_subtitle: "Fast, secure and 100% digital process per international standards", hero_btn: "Start Visa Application", how_title: "How It Works", step1: "Create account or login", step2: "Fill the form with your data", step3: "Attach required documents", step4: "Pay applicable fees", step5: "Receive PDF submission receipt", step6: "Track status in your profile" },
+  fr: { hero_title: "Demandez votre Visa pour l'Angola en Ligne", hero_subtitle: "Processus rapide, sécurisé et 100% numérique selon les normes internationales", hero_btn: "Commencer la Demande", how_title: "Comment ça Marche", step1: "Créez un compte ou connectez-vous", step2: "Remplissez le formulaire", step3: "Joignez les documents requis", step4: "Payez les frais", step5: "Recevez le reçu PDF", step6: "Suivez le statut" },
+  es: { hero_title: "Solicite su Visa para Angola en Línea", hero_subtitle: "Proceso rápido, seguro y 100% digital según normas internacionales", hero_btn: "Iniciar Solicitud", how_title: "Cómo Funciona", step1: "Cree cuenta o inicie sesión", step2: "Complete el formulario", step3: "Adjunte documentos", step4: "Pague las tasas", step5: "Reciba recibo PDF", step6: "Siga el estado" },
+  zh: { hero_title: "在线申请安哥拉签证", hero_subtitle: "根据国际标准，流程快速、安全且100%数字化", hero_btn: "开始申请", how_title: "如何操作", step1: "创建账户或登录", step2: "填写表格", step3: "上传所需文件", step4: "支付费用", step5: "获取PDF回执", step6: "在个人资料中跟踪" },
+  ar: { hero_title: "تقدم بطلب للحصول على تأشيرة أنغولا عبر الإنترنت", hero_subtitle: "عملية سريعة وآمنة ورقمية 100% وفقًا للمعايير الدولية", hero_btn: "بدء الطلب", how_title: "كيف يعمل", step1: "إنشاء حساب أو تسجيل الدخول", step2: "املأ النموذج", step3: "أرفق المستندات", step4: "ادفع الرسوم", step5: "استلم إيصال PDF", step6: "تتبع الحالة" },
+  ru: { hero_title: "Подайте заявку на визу в Анголу онлайн", hero_subtitle: "Быстрый, безопасный и 100% цифровой процесс по международным стандартам", hero_btn: "Начать заявку", how_title: "Как это работает", step1: "Создайте аккаунт или войдите", step2: "Заполните форму", step3: "Прикрепите документы", step4: "Оплатите сборы", step5: "Получите квитанцию PDF", step6: "Отслеживайте статус" },
+  de: { hero_title: "Beantragen Sie Ihr Angola-Visum online", hero_subtitle: "Schneller, sicherer und 100% digitaler Prozess nach internationalen Standards", hero_btn: "Antrag starten", how_title: "So funktioniert es", step1: "Konto erstellen oder anmelden", step2: "Formular ausfüllen", step3: "Dokumente anhängen", step4: "Gebühren bezahlen", step5: "PDF-Beleg erhalten", step6: "Status verfolgen" },
+  it: { hero_title: "Richiedi il tuo visto per l'Angola online", hero_subtitle: "Processo rapido, sicuro e 100% digitale secondo gli standard internazionali", hero_btn: "Inizia Richiesta", how_title: "Come Funziona", step1: "Crea account o accedi", step2: "Compila il modulo", step3: "Allega documenti", step4: "Paga le tasse", step5: "Ricevi ricevuta PDF", step6: "Traccia lo stato" },
+  hi: { hero_title: "अंगोला वीज़ा के लिए ऑनलाइन आवेदन करें", hero_subtitle: "अंतर्राष्ट्रीय मानकों के अनुसार तेज़, सुरक्षित और 100% डिजिटल प्रक्रिया", hero_btn: "आवेदन शुरू करें", how_title: "यह कैसे काम करता है", step1: "खाता बनाएं या लॉगिन करें", step2: "फॉर्म भरें", step3: "दस्तावेज़ संलग्न करें", step4: "शुल्क का भुगतान करें", step5: "PDF रसीद प्राप्त करें", step6: "स्थिति ट्रैक करें" }
+};
+
+let currentUser = null;
+let allApplications = [];
+
+function initApp() {
+  populateCountries();
+  loadUserFromStorage();
+  loadApplications();
+  updateUI();
+}
+
+function populateCountries() {
+  const natSelect = document.getElementById('nationality');
+  const resSelect = document.getElementById('residence');
+  const dialSelect = document.getElementById('dialCode');
+  if (!natSelect ||!resSelect ||!dialSelect) return;
+  countries.forEach(c => {
+    natSelect.innerHTML += `<option value="${c.code}">${c.flag} ${c.name}</option>`;
+    resSelect.innerHTML += `<option value="${c.code}">${c.flag} ${c.name}</option>`;
+    dialSelect.innerHTML += `<option value="${c.dial}">${c.flag} ${c.name} ${c.dial}</option>`;
+  });
+}
+
+function loadUserFromStorage() {
+  const user = localStorage.getItem('currentUser');
+  if (user) currentUser = JSON.parse(user);
+}
+
+function saveUserToStorage(user) {
+  localStorage.setItem('currentUser', JSON.stringify(user));
+  currentUser = user;
+}
+
+function loadApplications() {
+  const apps = localStorage.getItem('visaApplications');
+  if (apps) allApplications = JSON.parse(apps);
+}
+
+function saveApplications() {
+  localStorage.setItem('visaApplications', JSON.stringify(allApplications));
+}
+
+function updateUI() {
+  const userActions = document.getElementById('userActions');
+  if (!userActions) return;
+  
+  if (currentUser) {
+    userActions.innerHTML = `
+      <span style="color:var(--angola-yellow);">Olá, ${currentUser.name}</span>
+      <button onclick="showSection('perfil')"><i class="fas fa-user"></i> Meu Perfil</button>
+      ${currentUser.isAdmin? '<button onclick="showSection(\'admin\')"><i class="fas fa-shield-alt"></i> Admin</button>' : ''}
+      <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    `;
+  } else {
+    userActions.innerHTML = `
+      <button onclick="showModal('loginModal')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button onclick="showModal('registerModal')"><i class="fas fa-user-plus"></i> Criar Conta</button>
+    `;
+  }
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  const user = {
+    id: Date.now(),
+    name: document.getElementById('regName').value,
+    email: document.getElementById('regEmail').value,
+    phone: document.getElementById('regPhone').value,
+    password: document.getElementById('regPassword').value,
+    isAdmin: false,
+    createdAt: new Date().toISOString()
+  };
+  users.push(user);
+  localStorage.setItem('users', JSON.stringify(users));
+  saveUserToStorage(user);
+  closeModal('registerModal');
+  updateUI();
+  showSection('perfil');
+  alert('Conta criada com sucesso!');
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  if (email === 'admin@sme.gov.ao' && password === 'admin123') {
+    const adminUser = { id: 0, name: 'Administrador SME', email: email, isAdmin: true, createdAt: new Date().toISOString() };
+    saveUserToStorage(adminUser);
+    closeModal('loginModal');
+    updateUI();
+    showSection('admin');
+    loadAdminApplications();
+    return;
+  }
+  
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  const user = users.find(u => u.email === email && u.password === password);
+  
+  if (user) {
+    saveUserToStorage(user);
+    closeModal('loginModal');
+    updateUI();
+    showSection('perfil');
+    loadUserProfile();
+  } else {
+    alert('Email ou palavra-passe incorretos!');
+  }
+}
+
+function logout() {
+  localStorage.removeItem('currentUser');
+  currentUser = null;
+  updateUI();
+  showSection('inicio');
+}
+
+function checkAuth(section) {
+  if (!currentUser) {
+    alert('Precisa fazer login ou criar conta primeiro!');
+    showModal('loginModal');
+    return;
+  }
+  showSection(section);
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const section = document.getElementById(id);
+  if (section) section.classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  if (event?.target) event.target.classList.add('active');
+  window.scrollTo(0, 0);
+  
+  if (id === 'perfil' && currentUser) loadUserProfile();
+  if (id === 'admin' && currentUser?.isAdmin) loadAdminApplications();
+}
+
+function loadUserProfile() {
+  if (!currentUser) return;
+  
+  const profileContent = document.getElementById('profileContent');
+  if (!profileContent) return;
+  
+  profileContent.innerHTML = `
+    <div class="profile-data">
+      <div class="profile-item"><strong>Nome:</strong> ${currentUser.name || 'N/A'}</div>
+      <div class="profile-item"><strong>Email:</strong> ${currentUser.email || 'N/A'}</div>
+      <div class="profile-item"><strong>Telefone:</strong> ${currentUser.phone || 'Não informado'}</div>
+      <div class="profile-item"><strong>Data de Registo:</strong> ${currentUser.createdAt? new Date(currentUser.createdAt).toLocaleDateString('pt-PT') : 'N/A'}</div>
+    </div>
+  `;
+  
+  const myApps = allApplications.filter(app => app.userId === currentUser.id);
+  const myAppsDiv = document.getElementById('myApplications');
+  if (!myAppsDiv) return;
+  
+  if (myApps.length === 0) {
+    myAppsDiv.innerHTML = '<p class="alert alert-info">Ainda não tem pedidos submetidos.</p>';
+    return;
+  }
+  
+  let table = '<table><tr><th>Ref.</th><th>Tipo</th><th>Data</th><th>Estado</th><th>Ações</th></tr>';
+  myApps.forEach(app => {
+    table += `<tr>
+      <td>${app.ref}</td>
+      <td>${app.visaType}</td>
+      <td>${new Date(app.date).toLocaleDateString('pt-PT')}</td>
+      <td><span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></td>
+      <td><button class="btn btn-sm" onclick="downloadReceipt('${app.ref}')">PDF</button></td>
+    </tr>`;
+  });
+  table += '</table>';
+  myAppsDiv.innerHTML = table;
+}
+
+function submitVisaForm(e) {
+  e.preventDefault();
+  if (!currentUser) {
+    alert('Precisa estar logado!');
+    showModal('loginModal');
+    return;
+  }
+  
+  const ref = 'VZA-' + Date.now();
+  const application = {
+    ref: ref,
+    userId: currentUser.id,
+    userName: currentUser.name,
+    userEmail: currentUser.email,
+    fullName: document.getElementById('fullName').value,
+    birthDate: document.getElementById('birthDate').value,
+    nationality: document.getElementById('nationality').value,
+    residence: document.getElementById('residence').value,
+    dialCode: document.getElementById('dialCode').value,
+    phone: document.getElementById('phone').value,
+    email: document.getElementById('email').value,
+    passport: document.getElementById('passport').value,
+    passportExpiry: document.getElementById('passportExpiry').value,
+    visaType: document.getElementById('visaType').value,
+    entryDate: document.getElementById('entryDate').value,
+    purpose: document.getElementById('purpose').value,
+    status: 'Pendente',
+    date: new Date().toISOString()
+  };
+  
+  allApplications.push(application);
+  saveApplications();
+  alert(`Pedido submetido com sucesso!\nReferência: ${ref}`);
+  generatePDF(application);
+  document.getElementById('visaForm').reset();
+  showSection('perfil');
+}
+
+function loadAdminApplications() {
+  const adminDiv = document.getElementById('adminApplications');
+  if (!adminDiv) return;
+  
+  if (allApplications.length === 0) {
+    adminDiv.innerHTML = '<p class="alert alert-info">Nenhum pedido submetido ainda.</p>';
+    return;
+  }
+  
+  let table = '<table><tr><th>Ref.</th><th>Nome</th><th>Email</th><th>Tipo</th><th>Data</th><th>Estado</th><th>Ações</th></tr>';
+  allApplications.forEach(app => {
+    table += `<tr>
+      <td>${app.ref}</td>
+      <td>${app.fullName}</td>
+      <td>${app.email}</td>
+      <td>${app.visaType}</td>
+      <td>${new Date(app.date).toLocaleDateString('pt-PT')}</td>
+      <td><span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></td>
+      <td>
+        ${app.status === 'Pendente'? `
+          <button class="btn btn-success btn-sm" onclick="approveApplication('${app.ref}')">Aprovar</button>
+          <button class="btn btn-danger btn-sm" onclick="rejectApplication('${app.ref}')">Rejeitar</button>
+        ` : ''}
+        <button class="btn btn-sm" onclick="viewApplication('${app.ref}')">Ver</button>
+      </td>
+    </tr>`;
+  });
+  table += '</table>';
+  adminDiv.innerHTML = table;
+}
+
+function approveApplication(ref) {
+  const app = allApplications.find(a => a.ref === ref);
+  if (app) {
+    app.status = 'Aprovado';
+    saveApplications();
+    loadAdminApplications();
+    generateVisaPDF(app);
+    alert(`Pedido ${ref} APROVADO! Visto gerado em PDF.`);
+  }
+}
+
+function rejectApplication(ref) {
+  const app = allApplications.find(a => a.ref === ref);
+  if (app) {
+    app.status = 'Rejeitado';
+    saveApplications();
+    loadAdminApplications();
+    alert(`Pedido ${ref} REJEITADO. O requerente será notificado.`);
+  }
+}
+
+function viewApplication(ref) {
+  const app = allApplications.find(a => a.ref === ref);
+  if (!app) return;
+
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.style.display = 'flex';
+  modal.innerHTML = `
+    <div class="modal-content" style="max-width:700px;">
+      <h3>Detalhes do Pedido ${app.ref}</h3>
+      <div class="profile-data">
+        <div class="profile-item"><strong>Nome:</strong> ${app.fullName}</div>
+        <div class="profile-item"><strong>Data Nascimento:</strong> ${app.birthDate}</div>
+        <div class="profile-item"><strong>Nacionalidade:</strong> ${app.nationality}</div>
+        <div class="profile-item"><strong>Residência:</strong> ${app.residence}</div>
+        <div class="profile-item"><strong>Telefone:</strong> ${app.dialCode} ${app.phone}</div>
+        <div class="profile-item"><strong>Email:</strong> ${app.email}</div>
+        <div class="profile-item"><strong>Passaporte:</strong> ${app.passport}</div>
+        <div class="profile-item"><strong>Validade:</strong> ${app.passportExpiry}</div>
+        <div class="profile-item"><strong>Tipo Visto:</strong> ${app.visaType}</div>
+        <div class="profile-item"><strong>Entrada Prevista:</strong> ${app.entryDate}</div>
+        <div class="profile-item"><strong>Estado:</strong> <span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></div>
+        <div class="profile-item" style="grid-column:1/-1;"><strong>Propósito:</strong> ${app.purpose}</div>
+      </div>
+      <br>
+      <button class="btn" onclick="this.closest('.modal').remove()">Fechar</button>
+      <button class="btn btn-secondary" onclick="downloadReceipt('${app.ref}')">Baixar PDF</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function generatePDF(app) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.setTextColor(204, 9, 47);
+  doc.text('REPÚBLICA DE ANGOLA', 105, 20, { align: 'center' });
+  doc.setFontSize(12);
+  doc.setTextColor(0, 0, 0);
+  doc.text('Serviço de Migração e Estrangeiros - SME', 105, 28, { align: 'center' });
+  doc.text('COMPROVATIVO DE SUBMISSÃO DE PEDIDO DE VISTO', 105, 38, { align: 'center' });
+
+  doc.setLineWidth(0.5);
+  doc.line(20, 45, 190, 45);
+
+  doc.setFontSize(11);
+  doc.text(`Número de Referência: ${app.ref}`, 20, 55);
+  doc.text(`Data de Submissão: ${new Date(app.date).toLocaleDateString('pt-AO')}`, 20, 63);
+  doc.text(`Nome Completo: ${app.fullName}`, 20, 75);
+  doc.text(`Data Nascimento: ${app.birthDate}`, 20, 83);
+  doc.text(`Nacionalidade: ${app.nationality}`, 20, 91);
+  doc.text(`Passaporte Nº: ${app.passport}`, 20, 99);
+  doc.text(`Tipo de Visto: ${app.visaType}`, 20, 107);
+  doc.text(`Data Prevista Entrada: ${app.entryDate}`, 20, 115);
+  doc.text(`Email: ${app.email}`, 20, 123);
+  doc.text(`Telefone: ${app.dialCode} ${app.phone}`, 20, 131);
+  doc.text(`Estado: ${app.status}`, 20, 139);
+
+  doc.setFontSize(9);
+  doc.text('Este documento comprova a submissão do seu pedido de visto. Não constitui aprovação de visto.', 20, 155);
+  doc.text('Acompanhe o estado em: Call Center | WhatSap: +244 975 425 542', 20, 162);
+  doc.text('Conforme Lei nº 22/11 - Proteção de Dados e normas ICAO Doc 9303', 20, 175);
+
+  doc.save(`Recibo_Visto_${app.ref}.pdf`);
+}
+
+function generateVisaPDF(app) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFillColor(204, 9, 47);
+  doc.rect(0, 0, 210, 30, 'F');
+  doc.setFontSize(18);
+  doc.setTextColor(255, 255, 255);
+  doc.text('VISTO ELETRÓNICO - REPÚBLICA DE ANGOLA', 105, 20, { align: 'center' });
+
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(12);
+  doc.text('ELECTRONIC VISA - REPUBLIC OF ANGOLA', 105, 40, { align: 'center' });
+
+  doc.setFontSize(11);
+  doc.text(`Visto Nº: AGO-${app.ref}`, 20, 55);
+  doc.text(`Nome / Name: ${app.fullName}`, 20, 65);
+  doc.text(`Nacionalidade / Nationality: ${app.nationality}`, 20, 73);
+  doc.text(`Passaporte Nº / Passport No: ${app.passport}`, 20, 81);
+  doc.text(`Tipo / Type: ${app.visaType}`, 20, 89);
+  doc.text(`Validade / Valid: ${app.entryDate} até ${app.passportExpiry}`, 20, 97);
+  doc.text(`Entradas / Entries: Múltiplas`, 20, 105);
+  doc.text(`Estado / Status: APROVADO / APPROVED`, 20, 113);
+
+  doc.setFontSize(9);
+  doc.text('Este visto eletrónico é válido para apresentação às autoridades de imigração.', 20, 130);
+  doc.text('This e-Visa is valid for presentation to immigration authorities.', 20, 137);
+  doc.text('Verificação online: /verificar', 20, 150);
+  doc.text('Call Center: +244 975 425 542 | WhatsApp: +244 975 425 542', 20, 157);
+
+  doc.save(`VISTO_APROVADO_${app.ref}.pdf`);
+}
+
+function downloadReceipt(ref) {
+  const app = allApplications.find(a => a.ref === ref);
+  if (app) generatePDF(app);
+}
+
+function showModal(id) {
+  document.getElementById(id).style.display = 'flex';
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function changeLanguage() {
+  const lang = document.getElementById('languageSelect').value;
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    const key = el.getAttribute('data-lang');
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+}
+
+window.onclick = function(e) {
+  if (e.target.classList.contains('modal')) {
+    e.target.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>
