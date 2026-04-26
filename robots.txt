@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://visa-angola.github.io/gov.ao/sitemap.xml
