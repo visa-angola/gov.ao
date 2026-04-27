@@ -82,7 +82,6 @@
 }
 </script>
 
-
 <style>
 :root {
   --angola-red: #CC092F;
@@ -102,6 +101,25 @@ body {
   line-height: 1.6;
   color: var(--gray-800);
   background: var(--gray-100);
+  position: relative;
+}
+
+/* ===== MARCA DE ÁGUA - BRASÃO DE ANGOLA ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background-image: url('brasao-angola.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.04;
+  z-index: -1;
+  pointer-events: none;
 }
 header {
   background: var(--angola-black);
